@@ -1,0 +1,84 @@
+---
+title: "Climate extreme events"
+subtitle: "Forecasting extreme events costs and casualties using geocoded nightlight data, prompt engeneering, ML and econometrics."
+author: "Yoan WALLOIS"
+date: "10/1/2025"
+abstract: |
+  This study examines the prediction of climate extreme events and their associated costs and casualties. Using a combination of geocoded nightlight data, advanced machine learning techniques, and econometric models enhanced with prompt engineering, we develop a comprehensive forecasting framework. Our approach integrates multiple data sources to provide robust predictions of extreme weather events and their socioeconomic impacts.
+abstract-title: "Abstract"
+keywords: 
+  - Climate change
+  - Extreme events
+  - Machine learning
+  - Econometrics
+  - Nightlight data
+  - Forecasting
+format: 
+    html:
+        toc: true
+        toc-depth: 4
+        toc-title: "Index"
+        code_fold: true
+        theme:
+            light: flatly    # Theme for light mode (clean, modern Bootstrap theme)
+            dark: cyborg     # Theme for dark mode (dark background, bright text)
+        smooth-scroll: true
+        number-sections: true
+        title-block-banner: true
+        link-external-newwindow: true
+        toc-location: right
+        mainfont: "Times"
+        page-layout: full
+        code-fold: true
+        lang: en
+execute:
+  warning: false
+  message: false
+  echo: true
+  cache: false
+---
+
+```{r, include=FALSE}
+library(sf)
+library(terra)
+library(tmap)
+library(geodata)
+library(blackmarbler)
+library(raster)
+library(exactextractr)
+library(ggplot2)
+library(lubridate)
+```
+
+```{r setup, include=FALSE}
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+
+```
+
+# Introduction
+
+## About the project 
+
+## About me
+
+
+# The nightlight data collected for NASA
+```{r}
+bearer <- "eyJ0eXAiOiJKV1QiLCJvcmlnaW4iOiJFYXJ0aGRhdGEgTG9naW4iLCJzaWciOiJlZGxqd3RwdWJrZXlfb3BzIiwiYWxnIjoiUlMyNTYifQ.eyJ0eXBlIjoiVXNlciIsInVpZCI6InlvYW53YWxsb2lzIiwiZXhwIjoxNzY0Mzc0Mzk5LCJpYXQiOjE3NTkxODU1MTAsImlzcyI6Imh0dHBzOi8vdXJzLmVhcnRoZGF0YS5uYXNhLmdvdiIsImlkZW50aXR5X3Byb3ZpZGVyIjoiZWRsX29wcyIsImFjciI6ImVkbCIsImFzc3VyYW5jZV9sZXZlbCI6M30.0tblyRwcIkJtsPOiMLjW9xN-TXxOnxSRgYcTgy27HHfnX1Es-6kjpsVbrqkzgAowf-VvKPBjt7poBDBe4N_mfio8moYb4KGHtDCspslz2niVRNXUozrXH8AsB9cCXsuR4NTkMVh0cI7Po2KidpPNdxYfzNPRrVas5mGU7il3AL1pqvp8tyUU2qrx2A30xMd5ktW2DZJLAhXP6SqnsXiAWphXgwC9G84t9yhiD7B9gBvOyRZySBzbMB5TG7y09VGrXvi14eNfw9PU3R_gZYyNHHaPgD_IQCOz9Gt9Sx_V31UcXAC1rRzBuQ1Xnt-GcZ9yClVW6dxfgyL3H50ULjB6Xg"
+```
+
+# The EMDAT extreme event database
+
+# The forecasts
+
+## Stylized facts, correlations, and paterns
+
+## The models
+
+### Econometric models
+
+### ML models
+
+## The results 
+
+# Conclusion
