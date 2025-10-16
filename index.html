@@ -74,12 +74,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="index_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap-3af6e8ef14058dd7c5928858ffbc184b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="index_files/libs/bootstrap/bootstrap-dark-814bfa0fb37fe4a2e6de745159ab9d79.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="index_files/libs/bootstrap/bootstrap-3af6e8ef14058dd7c5928858ffbc184b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-5424c76b51d86bba9c2392ffbd233f26.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-dark-0e2fe7f59218cab887ddd057720918fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="index_files/libs/bootstrap/bootstrap-5424c76b51d86bba9c2392ffbd233f26.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <style>html{ scroll-behavior: smooth; }</style>
 
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -246,16 +247,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   </script>
 
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
+    <div class="quarto-title column-page-right">
       <h1 class="title">Climate extreme events</h1>
             <p class="subtitle lead">Forecasting extreme events costs and casualties using geocoded nightlight data, prompt engeneering, ML and econometrics.</p>
                       </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta column-page-right">
 
       <div>
       <div class="quarto-title-meta-heading">Author</div>
@@ -288,8 +289,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
   </div>
   
-  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-full">
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-full toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
   <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Index</h2>
    
@@ -299,8 +300,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#about-me" id="toc-about-me" class="nav-link" data-scroll-target="#about-me"><span class="header-section-number">1.1</span> About me</a></li>
   <li><a href="#about-the-project" id="toc-about-the-project" class="nav-link" data-scroll-target="#about-the-project"><span class="header-section-number">1.2</span> About the project</a></li>
   </ul></li>
-  <li><a href="#the-nightlight-data-collected-for-nasa" id="toc-the-nightlight-data-collected-for-nasa" class="nav-link" data-scroll-target="#the-nightlight-data-collected-for-nasa"><span class="header-section-number">2</span> The nightlight data collected for NASA</a></li>
-  <li><a href="#the-emdat-extreme-event-database" id="toc-the-emdat-extreme-event-database" class="nav-link" data-scroll-target="#the-emdat-extreme-event-database"><span class="header-section-number">3</span> The EMDAT extreme event database</a></li>
+  <li><a href="#the-extreme-events" id="toc-the-extreme-events" class="nav-link" data-scroll-target="#the-extreme-events"><span class="header-section-number">2</span> The extreme events</a>
+  <ul>
+  <li><a href="#the-em-dat-data-treatment" id="toc-the-em-dat-data-treatment" class="nav-link" data-scroll-target="#the-em-dat-data-treatment"><span class="header-section-number">2.1</span> The EM-DAT: data treatment</a></li>
+  <li><a href="#the-em-dat-sum-stats-and-plots" id="toc-the-em-dat-sum-stats-and-plots" class="nav-link" data-scroll-target="#the-em-dat-sum-stats-and-plots"><span class="header-section-number">2.2</span> The EM-DAT: Sum Stats and plots</a></li>
+  </ul></li>
+  <li><a href="#geocoded-data" id="toc-geocoded-data" class="nav-link" data-scroll-target="#geocoded-data"><span class="header-section-number">3</span> Geocoded data</a></li>
   <li><a href="#the-forecasts" id="toc-the-forecasts" class="nav-link" data-scroll-target="#the-forecasts"><span class="header-section-number">4</span> The forecasts</a>
   <ul>
   <li><a href="#stylized-facts-correlations-and-paterns" id="toc-stylized-facts-correlations-and-paterns" class="nav-link" data-scroll-target="#stylized-facts-correlations-and-paterns"><span class="header-section-number">4.1</span> Stylized facts, correlations, and paterns</a></li>
@@ -315,7 +320,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul>
 </nav>
 </div>
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content quarto-banner-title-block column-page-right" id="quarto-document-content">
 
 
 
@@ -326,22 +333,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
 <section id="about-me" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="about-me"><span class="header-section-number">1.1</span> About me</h2>
+<p>I’m <a href="https://yoanwallois.github.io/">Yoan Wallois</a>, a data scientist and economist with over five years of experience developing robust analytical frameworks that combine econometrics, machine learning, and text mining. I recently completed my PhD in Economics at the University of Lille, where my research focused on innovative applications of these methods to finance and environmental economics.</p>
+<p>My work is characterized by its methodological rigor and the diversity of data sources I handle. I’ve worked extensively with financial data from Datastream, transforming stock indices, composite indices, and treasury bond rates through GARCH models. I’ve collected and analyzed macroeconomic data from international institutions, processed geocoded microeconomic data on extreme climate events, and aggregated fiscal and macroeconomic datasets spanning multiple decades and countries. I’m equally comfortable with big data web scraping, interactive visualizations, and spatial analysis as I am with traditional time series and panel econometrics.</p>
+<p>My published research in Review of World Economics demonstrates this multidisciplinary approach: I extracted and analyzed sentiment from IMF reports for 16 developed and emerging economies over 15 years, then assessed their impact on financial markets using dynamic panel estimations. Currently, I’m leading several ambitious projects. The first involves analyzing over 70,000 legislative texts across 197 countries in 73 languages to create a global environmental policy stringency database, combining NLP techniques, machine learning classification algorithms, and macro-climatic data analysis spanning 50 years. Another examines how extreme weather events—droughts, heatwaves, floods, storms—affect environmental policy adoption across 140 countries using nonlinear probabilistic econometric models. I’m also investigating fiscal multipliers in EU member states through structural VAR models. Beyond research, I contribute to academic governance as a member of my laboratory’s council and have taught various courses in macroeconomics and econometrics. I’m proficient in Python, R, Stata, SQL, and work comfortably with Git, LaTeX, and Linux environments.</p>
+<p>I am now seeking an economist or data scientist position within a firm or organization where I can apply this expertise to address real-world challenges with direct operational impact. After five years developing rigorous research methodologies in academia, I’m eager to transition toward applied problems involving strategic decision-making support—whether analyzing market dynamics, assessing policy impacts, evaluating environmental and climate risks, or forecasting economic trends. I thrive in collaborative environments where I can contribute both technical depth and clear communication of complex results to diverse stakeholders. My ability to work autonomously, learn rapidly (I’m self-taught in Python and machine learning), and adapt to new domains makes me well-suited for dynamic organizations in finance, consulting, international institutions, think tanks, or the private sector. I’m looking for an opportunity where intellectual rigor meets practical application, where data-driven insights inform strategy, and where I can continue growing professionally while making meaningful contributions to my organization’s objectives.</p>
 </section>
 <section id="about-the-project" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="about-the-project"><span class="header-section-number">1.2</span> About the project</h2>
 </section>
 </section>
-<section id="the-nightlight-data-collected-for-nasa" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> The nightlight data collected for NASA</h1>
+<section id="the-extreme-events" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> The extreme events</h1>
+<p>The Emergency Events Database (EM-DAT) is a comprehensive global database maintained by the Centre for Research on the Epidemiology of Disasters (CRED) at the Université catholique de Louvain in Belgium. Since its establishment in 1988, EM-DAT has served as one of the most authoritative sources of data on natural and technological disasters worldwide, providing essential information for humanitarian action, disaster preparedness, and policy development.</p>
+<p>The database systematically records disasters that meet specific inclusion criteria, namely those causing ten or more deaths, affecting 100 or more people, or resulting in a declaration of a state of emergency or call for international assistance. It contains detailed information on the human impact, economic losses, and characteristics of thousands of disaster events dating back to 1900. Freely accessible to researchers, policymakers, and humanitarian organizations, EM-DAT has become an indispensable resource for analyzing spatiotemporal disaster patterns, quantifying vulnerability, and informing evidence-based strategies for disaster risk reduction and climate change adaptation.</p>
+<section id="the-em-dat-data-treatment" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="the-em-dat-data-treatment"><span class="header-section-number">2.1</span> The EM-DAT: data treatment</h2>
+<!--
+Talk about the data availabitily, the limits. Disclose the choices in term of date, event type.
+
+Make some parts of the code available for all, displayed as an image
+-->
+</section>
+<section id="the-em-dat-sum-stats-and-plots" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="the-em-dat-sum-stats-and-plots"><span class="header-section-number">2.2</span> The EM-DAT: Sum Stats and plots</h2>
+<!--
+World map about the extreme climate events
+-->
+</section>
+</section>
+<section id="geocoded-data" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Geocoded data</h1>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>bearer <span class="ot">&lt;-</span> <span class="st">"eyJ0eXAiOiJKV1QiLCJvcmlnaW4iOiJFYXJ0aGRhdGEgTG9naW4iLCJzaWciOiJlZGxqd3RwdWJrZXlfb3BzIiwiYWxnIjoiUlMyNTYifQ.eyJ0eXBlIjoiVXNlciIsInVpZCI6InlvYW53YWxsb2lzIiwiZXhwIjoxNzY0Mzc0Mzk5LCJpYXQiOjE3NTkxODU1MTAsImlzcyI6Imh0dHBzOi8vdXJzLmVhcnRoZGF0YS5uYXNhLmdvdiIsImlkZW50aXR5X3Byb3ZpZGVyIjoiZWRsX29wcyIsImFjciI6ImVkbCIsImFzc3VyYW5jZV9sZXZlbCI6M30.0tblyRwcIkJtsPOiMLjW9xN-TXxOnxSRgYcTgy27HHfnX1Es-6kjpsVbrqkzgAowf-VvKPBjt7poBDBe4N_mfio8moYb4KGHtDCspslz2niVRNXUozrXH8AsB9cCXsuR4NTkMVh0cI7Po2KidpPNdxYfzNPRrVas5mGU7il3AL1pqvp8tyUU2qrx2A30xMd5ktW2DZJLAhXP6SqnsXiAWphXgwC9G84t9yhiD7B9gBvOyRZySBzbMB5TG7y09VGrXvi14eNfw9PU3R_gZYyNHHaPgD_IQCOz9Gt9Sx_V31UcXAC1rRzBuQ1Xnt-GcZ9yClVW6dxfgyL3H50ULjB6Xg"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>tmin10 <span class="ot">&lt;-</span> <span class="fu">cmip6_world</span>(<span class="st">"CNRM-CM6-1"</span>, <span class="st">"585"</span>, <span class="st">"2061-2080"</span>, <span class="at">var=</span><span class="st">"tmin"</span>, <span class="at">res=</span><span class="dv">10</span>, <span class="at">path=</span><span class="fu">tempdir</span>())</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#soil_world(var, depth, stat="mean", name="", path, vsi=FALSE, ...)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">world</span>(<span class="at">path=</span><span class="fu">tempdir</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-</section>
-<section id="the-emdat-extreme-event-database" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> The EMDAT extreme event database</h1>
 </section>
 <section id="the-forecasts" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> The forecasts</h1>

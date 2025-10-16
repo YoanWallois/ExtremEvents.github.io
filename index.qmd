@@ -22,21 +22,26 @@ format:
         theme:
             light: flatly    # Theme for light mode (clean, modern Bootstrap theme)
             dark: cyborg     # Theme for dark mode (dark background, bright text)
+        css: styles.css
         smooth-scroll: true
         number-sections: true
         title-block-banner: true
         link-external-newwindow: true
-        toc-location: right
-        mainfont: "Times"
+        toc-location: left
+        mainfont: "lualatex"
+        fontsize: 16pt
         page-layout: full
         code-fold: true
         lang: en
+        text-align: justify
 execute:
   warning: false
   message: false
   echo: true
   cache: false
+
 ---
+
 
 ```{r, include=FALSE}
 library(sf)
@@ -57,18 +62,156 @@ options(repos = c(CRAN = "https://cloud.r-project.org/"))
 
 # Introduction
 
+
 ## About me
 
+I'm [Yoan Wallois](https://yoanwallois.github.io/), a data scientist and economist with over five years of experience developing robust analytical frameworks that combine econometrics, machine learning, and text mining. I recently completed my PhD in Economics at the University of Lille, where my research focused on innovative applications of these methods to finance and environmental economics.
+
+My work is characterized by its methodological rigor and the diversity of data sources I handle. I've worked extensively with financial data from Datastream, transforming stock indices, composite indices, and treasury bond rates through GARCH models. I've collected and analyzed macroeconomic data from international institutions, processed geocoded microeconomic data on extreme climate events, and aggregated fiscal and macroeconomic datasets spanning multiple decades and countries. I'm equally comfortable with big data web scraping, interactive visualizations, and spatial analysis as I am with traditional time series and panel econometrics.
+
+My published research in Review of World Economics demonstrates this multidisciplinary approach: I extracted and analyzed sentiment from IMF reports for 16 developed and emerging economies over 15 years, then assessed their impact on financial markets using dynamic panel estimations. Currently, I'm leading several ambitious projects. The first involves analyzing over 70,000 legislative texts across 197 countries in 73 languages to create a global environmental policy stringency database, combining NLP techniques, machine learning classification algorithms, and macro-climatic data analysis spanning 50 years. Another examines how extreme weather events—droughts, heatwaves, floods, storms—affect environmental policy adoption across 140 countries using nonlinear probabilistic econometric models. I'm also investigating fiscal multipliers in EU member states through structural VAR models.
+Beyond research, I contribute to academic governance as a member of my laboratory's council and have taught various courses in macroeconomics and econometrics. I'm proficient in Python, R, Stata, SQL, and work comfortably with Git, LaTeX, and Linux environments.
+
+I am now seeking an economist or data scientist position within a firm or organization where I can apply this expertise to address real-world challenges with direct operational impact. After five years developing rigorous research methodologies in academia, I'm eager to transition toward applied problems involving strategic decision-making support—whether analyzing market dynamics, assessing policy impacts, evaluating environmental and climate risks, or forecasting economic trends. I thrive in collaborative environments where I can contribute both technical depth and clear communication of complex results to diverse stakeholders. My ability to work autonomously, learn rapidly (I'm self-taught in Python and machine learning), and adapt to new domains makes me well-suited for dynamic organizations in finance, consulting, international institutions, think tanks, or the private sector. I'm looking for an opportunity where intellectual rigor meets practical application, where data-driven insights inform strategy, and where I can continue growing professionally while making meaningful contributions to my organization's objectives.
 
 ## About the project 
 
 
-# The nightlight data collected for NASA
+
+# The extreme events
+
+The Emergency Events Database (EM-DAT) is a comprehensive global database maintained by the Centre for Research on the Epidemiology of Disasters (CRED) at the Université catholique de Louvain in Belgium. Since its establishment in 1988, EM-DAT has served as one of the most authoritative sources of data on natural and technological disasters worldwide, providing essential information for humanitarian action, disaster preparedness, and policy development. 
+
+The database systematically records disasters that meet specific inclusion criteria, namely those causing ten or more deaths, affecting 100 or more people, or resulting in a declaration of a state of emergency or call for international assistance. It contains detailed information on the human impact, economic losses, and characteristics of thousands of disaster events dating back to 1900. Freely accessible to researchers, policymakers, and humanitarian organizations, EM-DAT has become an indispensable resource for analyzing spatiotemporal disaster patterns, quantifying vulnerability, and informing evidence-based strategies for disaster risk reduction and climate change adaptation.
+
+## The EM-DAT: data treatment 
+<!--
+Talk about the data availabitily, the limits. Disclose the choices in term of date, event type.
+
+Make some parts of the code available for all, displayed as an image
+-->
+## The EM-DAT: Sum Stats and plots
+
+<!--
+World map about the extreme climate events
+-->
+
+
+
+# Geocoded data
+
 ```{r}
+install.packages(c("httr", "jsonlite", "rhdf5", "terra", "sf"))
+
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("rhdf5")
+```
+
+```{r}
+library(httr)
+library(jsonlite)
+library(rhdf5)
+library(terra)
+
+# Your NASA Earthdata credentials
+DAYLY_UPDATED_API_KEY <- "eyJ0eXAiOiJKV1QiLCJvcmlnaW4iOiJFYXJ0aGRhdGEgTG9naW4iLCJzaWciOiJlZGxqd3RwdWJrZXlfb3BzIiwiYWxnIjoiUlMyNTYifQ.eyJ0eXBlIjoiVXNlciIsInVpZCI6InlvYW53YWxsb2lzIiwiZXhwIjoxNzY0Mzc0Mzk5LCJpYXQiOjE3NTkxODU1MTAsImlzcyI6Imh0dHBzOi8vdXJzLmVhcnRoZGF0YS5uYXNhLmdvdiIsImlkZW50aXR5X3Byb3ZpZGVyIjoiZWRsX29wcyIsImFjciI6ImVkbCIsImFzc3VyYW5jZV9sZXZlbCI6M30.0tblyRwcIkJtsPOiMLjW9xN-TXxOnxSRgYcTgy27HHfnX1Es-6kjpsVbrqkzgAowf-VvKPBjt7poBDBe4N_mfio8moYb4KGHtDCspslz2niVRNXUozrXH8AsB9cCXsuR4NTkMVh0cI7Po2KidpPNdxYfzNPRrVas5mGU7il3AL1pqvp8tyUU2qrx2A30xMd5ktW2DZJLAhXP6SqnsXiAWphXgwC9G84t9yhiD7B9gBvOyRZySBzbMB5TG7y09VGrXvi14eNfw9PU3R_gZYyNHHaPgD_IQCOz9Gt9Sx_V31UcXAC1rRzBuQ1Xnt-GcZ9yClVW6dxfgyL3H50ULjB6Xg"
+```
+
+```{r}
+# Function to download VIIRS nightlight data
+download_viirs_nightlight <- function(product = "VNP46A1", 
+                                      collection = "5000",
+                                      date = "2024-01-15",
+                                      tiles = c("h08v05", "h09v05"),
+                                      download_dir = "./nightlight_data",
+                                      app_key) {
+  
+  # Create download directory
+  if (!dir.exists(download_dir)) {
+    dir.create(download_dir, recursive = TRUE)
+  }
+  
+  # Format date for API
+  year <- substr(date, 1, 4)
+  doy <- format(as.Date(date), "%j")  # Day of year
+  
+  # Build API URL
+  base_url <- "https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives"
+  url <- sprintf("%s/%s/%s/%s", base_url, product, collection, date)
+  
+  # Make API request
+  response <- GET(
+    url,
+    add_headers(Authorization = paste("Bearer", app_key))
+  )
+  
+  # Check response
+  if (status_code(response) != 200) {
+    stop("API request failed: ", status_code(response))
+  }
+  
+  # Parse JSON response
+  files_info <- fromJSON(content(response, "text"))
+  
+  # Filter for specific tiles if specified
+  if (!is.null(tiles)) {
+    files_info <- files_info[grepl(paste(tiles, collapse = "|"), 
+                                   files_info$name), ]
+  }
+  
+  # Download files
+  downloaded_files <- c()
+  
+  for (i in 1:nrow(files_info)) {
+    file_name <- files_info$name[i]
+    file_url <- files_info$downloadsLink[i]
+    output_path <- file.path(download_dir, file_name)
+    
+    cat("Downloading:", file_name, "\n")
+    
+    download_response <- GET(
+      file_url,
+      add_headers(Authorization = paste("Bearer", app_key)),
+      write_disk(output_path, overwrite = TRUE),
+      progress()
+    )
+    
+    if (status_code(download_response) == 200) {
+      downloaded_files <- c(downloaded_files, output_path)
+      cat("Successfully downloaded:", file_name, "\n")
+    } else {
+      cat("Failed to download:", file_name, "\n")
+    }
+  }
+  
+  return(downloaded_files)
+}
+
+# Example usage
+files <- download_viirs_nightlight(
+  product = "VNP46A1",
+  date = "2024-01-15",
+  tiles = c("h08v05"),  # Specify your tiles of interest
+  app_key = DAYLY_UPDATED_API_KEY
+)
+```
+
+```{r}
+tmin10 <- cmip6_world("CNRM-CM6-1", "585", "2061-2080", var="tmin", res=10, path=tempdir())
+
+
+#soil_world(var, depth, stat="mean", name="", path, vsi=FALSE, ...)
+w <- world(path=tempdir())
+```
+
+
+
+```{r, include = FALSE}
 bearer <- "eyJ0eXAiOiJKV1QiLCJvcmlnaW4iOiJFYXJ0aGRhdGEgTG9naW4iLCJzaWciOiJlZGxqd3RwdWJrZXlfb3BzIiwiYWxnIjoiUlMyNTYifQ.eyJ0eXBlIjoiVXNlciIsInVpZCI6InlvYW53YWxsb2lzIiwiZXhwIjoxNzY0Mzc0Mzk5LCJpYXQiOjE3NTkxODU1MTAsImlzcyI6Imh0dHBzOi8vdXJzLmVhcnRoZGF0YS5uYXNhLmdvdiIsImlkZW50aXR5X3Byb3ZpZGVyIjoiZWRsX29wcyIsImFjciI6ImVkbCIsImFzc3VyYW5jZV9sZXZlbCI6M30.0tblyRwcIkJtsPOiMLjW9xN-TXxOnxSRgYcTgy27HHfnX1Es-6kjpsVbrqkzgAowf-VvKPBjt7poBDBe4N_mfio8moYb4KGHtDCspslz2niVRNXUozrXH8AsB9cCXsuR4NTkMVh0cI7Po2KidpPNdxYfzNPRrVas5mGU7il3AL1pqvp8tyUU2qrx2A30xMd5ktW2DZJLAhXP6SqnsXiAWphXgwC9G84t9yhiD7B9gBvOyRZySBzbMB5TG7y09VGrXvi14eNfw9PU3R_gZYyNHHaPgD_IQCOz9Gt9Sx_V31UcXAC1rRzBuQ1Xnt-GcZ9yClVW6dxfgyL3H50ULjB6Xg"
 ```
 
-# The EMDAT extreme event database
+
 
 # The forecasts
 
