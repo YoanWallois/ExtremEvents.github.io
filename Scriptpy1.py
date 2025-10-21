@@ -15,6 +15,9 @@ from ollama import chat
 from ollama import ChatResponse
 import re
 
+from ollama import Client
+
+client = Client()
 # ============================================================================
 # %% 
 # Import databases on extreme climate events
@@ -60,9 +63,9 @@ EMDAT['Location_coordonates'] = EMDAT['Location_coordonates'].apply(lambda d: d.
 # Add missing location coordonates for extrem event
 
 def find_coordonates(location_area):
-  response: ChatResponse = chat(model='gemma3:12b', messages=[{
+  response: ChatResponse = chat(model='gpt-oss:120b-cloud', messages=[{
     'role': 'user',
-    'content':  'Give me precisely both latitude and the longitude in Signed Decimal Degrees of' + location_area[0] +" in " + location_area[1] + "? If it is two separate location, give me two different coordinates in Signed Decimal Degrees separated by ;. If you have a range of coordinates, give me the average center the area. If you have a state and a city, give me only the city coordinates in Signed Decimal Degrees. Format the answer as lat, lon without any text. If you have a list of cities/regions, give me only the coordinates in Signed Decimal Degrees separated by ';' of the cities. Never give me the names of the locations. Systeme message: You are a precise and concise assistant that only answers with the requested information without any additional text. Make sure to provide both latitude and longitude every time and systematically convert the coordinates in Signed Decimal Degrees.",
+    'content':  "First I want precisely both latitude and the longitude of " + location_area[0] + " in " + location_area[1] + "? If it is separate locations, give me different coordinates in Signed Decimal Degrees separated by ;. If you have more than 3 city coordinates, give me the average center the area. If you have a state name, give me the coordinates of its center. If you have a state/district and a city that have approximatively the same name, give me only the city coordinates unless it clear that the state/district is mentioned. Never give me the names of the locations. Secondly, I want you to make sure you convert it to Signed Decimal Degrees. Then, I want you to format it as such: 'latitude,longitude;latitude,longitude', with r'^-?\d+(.\d+)?,-?\d+(.\d+)?$' format for latitude and longitude. Only answers with the coordinates without any additional text. Be careful to respect the format.",
   },])
   return response.message.content
 
@@ -83,6 +86,112 @@ with open(Path().joinpath('EMDAT_with_coordonates.csv'), 'w', encoding='utf-8') 
     EMDAT.to_csv(f, sep='\t', index=False) 
     
 # %%
+# Testing and re-running the function for missing/invalid coordonates
+
+# Import sample data from csv file
+with open('EMDAT_with_coordonates.csv', 'r', encoding='utf-8') as file:
+    EMDAT = pd.read_csv(file, sep='\t')
+
+
+def find_coordonates_reboot(location_area):
+    messages = [
+        {
+    'role': 'user',
+    'content': "First I want precisely both latitude and the longitude of " + location_area[0] + " in " + location_area[1] + "? If it is separate locations, give me different coordinates in Signed Decimal Degrees separated by ;. If you have more than 3 city coordinates, give me the average center the area. If you have a state name, give me the coordinates of its center. If you have a state/district and a city that have approximatively the same name, give me only the city coordinates unless it clear that the state/district is mentioned. Never give me the names of the locations. Secondly, I want you to make sure you convert it to Signed Decimal Degrees. Then, I want you to format it as such: 'latitude,longitude;latitude,longitude', with r'^-?\d+(.\d+)?,-?\d+(.\d+)?$' format for latitude and longitude. Only answers with the coordinates without any additional text. Be careful to respect the format.",
+    },
+    ]
+    return "".join([part['message']['content'] for part in client.chat('gpt-oss:120b-cloud', messages=messages, stream=True)])
+
+
+#%%
+# Function to process invalid coordinates
+
+def process_invalid_coordinates(df):
+    """
+    Process and clean coordinates in a dataframe.
+    
+    Parameters:
+    -----------
+    df : pandas.DataFrame
+        DataFrame containing 'coordonates', 'coordonates1', 'Location_coordonates', 
+        'Location', and 'Country' columns
+    find_coordonates_reboot : callable
+        Function that finds coordinates from a coordinate string
+        
+    Returns:
+    --------
+    pandas.DataFrame
+        DataFrame with processed and validated coordinates
+    """
+    
+    # Step 1: Verify that we have both latitude and longitude and correct missing formats
+    df['coordonates_validity'] = df['coordonates'].apply(lambda x: (
+      all(re.match(r'^-?\d+(\.\d+)?,-?\d+(\.\d+)?$', part) is not None for part in x.split(';') if len(part) > 0) if pd.notna(x) else False
+    ))
+
+    print((df['coordonates_validity'] != False).value_counts()) # Counterintuitive but ok
+    
+    df['coordonates'] = df.apply(
+        lambda row: [row['Location'], row['Country']] 
+            if row['coordonates_validity'] == False 
+            else row['coordonates'],
+        axis=1
+    )
+    
+    df['Location_coordonates1'] = df.apply(
+        lambda row: find_coordonates_reboot(row['coordonates']) 
+            if row['coordonates_validity'] == False 
+            else row['Location_coordonates'],
+        axis=1
+    )
+    
+    
+    # Step 2: Re-fetch coordinates for invalid entries and clean them
+    df['Location_coordonates1'] = df.apply(
+        lambda row: find_coordonates_reboot(row['coordonates']) 
+            if row['coordonates_validity'] == False 
+            else row['Location_coordonates'],
+        axis=1
+    )
+    
+    df['coordonates'] = df['Location_coordonates1'].apply(
+        lambda location_i: location_i.split(';')
+    )
+    
+    df['coordonates'] = df['coordonates'].apply(
+        lambda location_list: [location_i.replace("\n", "").strip() 
+                              for location_i in location_list]
+    )
+    
+    df['coordonates'] = df['coordonates'].apply(
+        lambda location_list: [re.sub(r'\s+', '', location_i) 
+                              for location_i in location_list]
+    )
+    
+    df['coordonates'] = df['coordonates'].apply(
+        lambda location_list: ';'.join(location_list)
+    )
+    
+    return df
+    
+
+#%%
+# Loop to process all invalid coordinates until all are valid
+
+EMDAT = process_invalid_coordinates(EMDAT)
+
+#%% 
+
+EMDAT['coordonates_validity'] = EMDAT['coordonates'].apply(lambda x: (
+      all(re.match(r'^-?\d+(\.\d+)?,-?\d+(\.\d+)?$', part) is not None for part in x.split(';') if len(part) > 0) if pd.notna(x) else False
+    ))
+
+# %% 
+# Save the new database with corrected coordinates
+with open(Path().joinpath('EMDAT_with_coordonates.csv'), 'w', encoding='utf-8') as f:
+    EMDAT.to_csv(f, sep='\t', index=False) 
+
 
 # End of Scriptpy1.py
 # ============================================================================  
+# %%
